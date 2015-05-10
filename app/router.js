@@ -5,6 +5,8 @@ define(function(require, exports, module) {
 
   var Play = require("components/play/index");
   var Highscores = require("components/highscores/index");
+  var Start = require("components/start/index");
+  var gameLayout;
 
   require("collectionCache");
   require("bootstrap");
@@ -15,6 +17,7 @@ define(function(require, exports, module) {
       // Set up the highscores.
       this.highscores = new Highscores.Collection();
       this.round = new Play.Collection();
+      this.start = Start.Collection;
 
       // Use main layout and set Views.
       var Layout = Backbone.Layout.extend({
@@ -23,10 +26,11 @@ define(function(require, exports, module) {
         template: require("ldsh!./templates/main"),
 
         views: {
-          //TODO changer pour mettre le bouton "Play ?" par défaut
-          ".game": new Play.Views.List({ model: this.round })
+          ".game": new Start.Views.List()
         }
       });
+
+      gameLayout = Layout;
       
       // Render to the page.
       new Layout().render();
@@ -38,18 +42,27 @@ define(function(require, exports, module) {
       "highscores": "highscores"
     },
 
+    start: function(){
+      //gameLayout.removeView(".game");
+      //gameLayout.setView(".game", new StartView());
+    },
+
     play: function() {
       // Reset the state and render.
       //this.reset();
-      console.log("play");
-
+      //this.round.fetch();
     },
 
     highscores: function() {
-
+      //Clear the data
+      //this.highscores.clear();
       // Fetch the data.
       //this.highscores.fetch();
-      console.log("highscores")
+    },
+
+    reset: function(){
+      // Reset collections to initial state.
+      //this.play.reset();
     }
   });
 
