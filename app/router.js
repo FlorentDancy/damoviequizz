@@ -13,7 +13,8 @@ define(function(require, exports, module) {
   var Router = Backbone.Router.extend({
     initialize: function() {
       // Set up the highscores.
-      //this.highscores = new Highscores.Collection();
+      this.highscores = new Highscores.Collection();
+      this.round = new Play.Collection();
 
       // Use main layout and set Views.
       var Layout = Backbone.Layout.extend({
@@ -22,7 +23,8 @@ define(function(require, exports, module) {
         template: require("ldsh!./templates/main"),
 
         views: {
-          //".highscores": new User.Views.List({ collection: this.highscores })
+          //TODO changer pour mettre le bouton "Play ?" par défaut
+          ".game": new Play.Views.List({ model: this.round })
         }
       });
       
@@ -31,7 +33,8 @@ define(function(require, exports, module) {
     },
 
     routes: {
-      "": "play",
+      "": "start",
+      "play": "play",
       "highscores": "highscores"
     },
 
