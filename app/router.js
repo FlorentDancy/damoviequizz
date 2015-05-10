@@ -6,7 +6,6 @@ define(function(require, exports, module) {
   var Play = require("components/play/index");
   var Highscores = require("components/highscores/index");
   var Start = require("components/start/index");
-  var gameLayout;
 
   require("collectionCache");
   require("bootstrap");
@@ -14,7 +13,6 @@ define(function(require, exports, module) {
   // Defining the application router, you can attach sub routers here.
   var Router = Backbone.Router.extend({
     initialize: function() {
-      // Set up the highscores.
       this.highscores = new Highscores.Collection();
       this.round = new Play.Collection();
       this.start = Start.Collection;
@@ -26,11 +24,9 @@ define(function(require, exports, module) {
         template: require("ldsh!./templates/main"),
 
         views: {
-          ".game": new Start.Views.List()
+          ".game": new Play.Views.List({model : this.round})
         }
       });
-
-      gameLayout = Layout;
       
       // Render to the page.
       new Layout().render();
