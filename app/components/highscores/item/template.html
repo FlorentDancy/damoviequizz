@@ -1,6 +1,4 @@
 <li class="list-group-item highscore">
-    <span class="badge score"><%= highscore.get("score") %> points</span>
     <span class="badge time"><%= highscore.get("time") %>s</span>
-    <span class="badge round"><%= highscore.get("round") %> round <% if ((highscore) && (highscore.get("round") > 1)) { %> s <% } %> </span>
-    <%= highscore.get("name") %>
+    <%= highscore.get("name") %> : <%= highscore.get("score") %> point<% if ((highscore) && (highscore.get("score") > 1)) { %>s<% } %>
 </li>

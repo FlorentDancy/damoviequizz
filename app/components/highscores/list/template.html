@@ -1,10 +1,10 @@
-<% if (highscores && highscores.length) { %>
+<% if (highscores.length) { %>
+  <a href="/highscores" class="btn btn-primary reset" role="button">Reset Highscores</a>
   <h4>Highscores</h4>
   <hr>
   <ul class="list-group highscores"></ul>
-  <button>Reset</button>
 <% } else { %>
-  <h4>No highscores yet.</h4>
+  <h4>No highscore yet.</h4>
   <hr/>
 <% } %>
 
