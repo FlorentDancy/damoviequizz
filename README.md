@@ -12,7 +12,7 @@ To run locally you will need to install [Node.js](http://nodejs.org) and
 git clone git@github.com:FlorentDancy/damoviequizz.git
 
 # Change directory into it.
-cd github-viewer
+cd damoviequizz
 
 # Install the Node dependencies and Bower dependencies.
 npm install -q
@@ -20,12 +20,6 @@ npm install -q
 # Run the server
 grunt server
 ```
-
-## Stack ##
-
-This is an entirely client-side application, meaning aside from the configured
-HTTP server and the remote API, there is no server processing.  All logic is
-isolated to JavaScript.
 
 ### Backbone Boilerplate ###
 
