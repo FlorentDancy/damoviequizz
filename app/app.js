@@ -5,6 +5,7 @@ define(function(require, exports, module) {
   var $ = require("jquery");
   var Backbone = require("backbone");
   var Layout = require("layoutmanager");
+  var Basil = require("basil");
 
   // Alias the module for easier identification.
   var app = module.exports;

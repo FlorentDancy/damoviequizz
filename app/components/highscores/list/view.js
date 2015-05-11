@@ -4,6 +4,14 @@ define(function(require, exports, module) {
   var app = require("app");
   var Item = require("../item/view");
 
+  var options = {
+    namespace: 'highscores',
+    storages: ['local'],
+    expireDays: 1
+  };
+
+  var basil = new Basil(options);
+
   var Layout = Backbone.Layout.extend({
     template: require("ldsh!./template"),
 
