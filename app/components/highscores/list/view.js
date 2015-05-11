@@ -3,6 +3,7 @@ define(function(require, exports, module) {
 
   var app = require("app");
   var Item = require("../item/view");
+  var HighscoresCollection = require("../collection");
 
   var options = {
     namespace: 'highscores',
@@ -11,12 +12,18 @@ define(function(require, exports, module) {
   };
 
   var basil = new Basil(options);
+  var highscores = new HighscoresCollection();
 
   var Layout = Backbone.Layout.extend({
     template: require("ldsh!./template"),
 
-    serialize: function() {
-      return { highscores: this.collection };
+    events : {
+      "click .reset" : "resetHighscores"
+    },
+
+    resetHighscores: function(){
+      basil.reset();
+      highscores.reset();
     },
 
     beforeRender: function() {
