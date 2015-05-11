@@ -6,6 +6,7 @@ define(function(require, exports, module) {
   var Play = require("components/play/index");
   var Highscores = require("components/highscores/index");
   var Start = require("components/start/index");
+  var gameLayout;
 
   require("collectionCache");
   require("bootstrap");
@@ -29,7 +30,8 @@ define(function(require, exports, module) {
       });
       
       // Render to the page.
-      new Layout().render();
+      gameLayout = new Layout();
+      gameLayout.render();
     },
 
     routes: {
@@ -39,17 +41,21 @@ define(function(require, exports, module) {
     },
 
     start: function(){
-      //gameLayout.removeView(".game");
-      //gameLayout.setView(".game", new StartView());
+      gameLayout.setView(".game", new Start.Views.List());
+      gameLayout.render();
     },
 
     play: function() {
+      gameLayout.setView(".game", new Play.Views.List({model : this.round}));
+      gameLayout.render();
       // Reset the state and render.
       //this.reset();
       //this.round.fetch();
     },
 
     highscores: function() {
+      gameLayout.setView(".game", new Highscores.Views.List({model : this.highscores}));
+      gameLayout.render();
       //Clear the data
       //this.highscores.clear();
       // Fetch the data.
