@@ -3,11 +3,11 @@ define(function(require, exports, module) {
 
   var app = require("app");
 
-  var Collection = Backbone.Collection.extend({
+  var HighscoresCollection = Backbone.Collection.extend({
     url: function() {
       //return app.api + "users/" + this.user + "/repos?callback=?";
     }
   });
 
-  module.exports = Collection;
+  module.exports = HighscoresCollection;
 });

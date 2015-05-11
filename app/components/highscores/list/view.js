@@ -27,18 +27,35 @@ define(function(require, exports, module) {
     },
 
     beforeRender: function() {
-      if (this.collection && this.collection.length){
-        this.collection.each(function(highscore) {
-          this.insertView("ul", new Item({
-            model: highscore
-          }));
-        }, this);
-      }
+      highscores.each(function(highscore) {
+        this.insertView("ul", new Item({
+          model: highscore
+        }));
+      }, this);
     },
 
+    serialize: function() {
+      return { highscores: highscores };
+    },
+
+    //Pour trier les éléments de la collection
+    /*comparator: function (model) {
+      return model.get("score");
+    },*/
+
     initialize: function() {
-      // Whenever the collection resets, re-render.
-      //this.listenTo(this.collection, "sync request reset", this.render);
+      this.listenTo(highscores, "reset sync request", this.render);
+
+      var entries = basil.keys();
+      $.each(entries, function(key, value){
+        var entry = {
+          "name" : basil.get(value)['name'],
+          "score" : basil.get(value)['score'],
+          "time" : basil.get(value)['time']
+        };
+        highscores.add(entry);
+      });
+
     }
   });
 
