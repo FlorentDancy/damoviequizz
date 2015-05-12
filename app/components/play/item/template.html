@@ -4,13 +4,20 @@
         <div class="caption">
             <h3>Question N°<%= currentRound.get("currentRoundNumber") || '000' %></h3>
             <p>Does <%= currentRound.get("currentActor").actorName || "ACTORNAME" %> play in this movie?</p>
-            <img src="http://image.tmdb.org/t/p/w500<% print(currentRound.get('currentActor').actorPicture) %>?api_key=7ea5f490261a949e52930517e1b4657c" alt="Poster" class="actor-picture">
+            <img src="<% if(currentRound.get('currentActor').actorPicture == null){
+                            print('http://obrieniph.ucalgary.ca/files/iph/person_placeholder-image.png')
+                         }
+                         else{
+                            print('http://image.tmdb.org/t/p/w500' + currentRound.get('currentActor').actorPicture) + '?api_key=7ea5f490261a949e52930517e1b4657c'
+                        } %>" alt="Poster" class="actor-picture">
 
         </div>
     </div>
 
     <div class="col-sm-4">
-        <img src="http://image.tmdb.org/t/p/w500<% print(currentRound.get('currentMovie').posterUrl) %>?api_key=7ea5f490261a949e52930517e1b4657c" alt="Poster" class="poster">
+        <img src="http://image.tmdb.org/t/p/w500<%
+        print(currentRound.get('currentMovie').posterUrl)
+         %>?api_key=7ea5f490261a949e52930517e1b4657c" alt="Poster" class="poster">
     </div>
 
     <div class="col-sm-4">
