@@ -4,6 +4,14 @@ define(function(require, exports, module) {
   var app = require("app");
   var Play = require("components/play/index");
 
+  var options = {
+    namespace: 'highscores',
+    storages: ['local'],
+    expireDays: 1
+  };
+
+  var basil = new Basil(options);
+
   var Layout = Backbone.Layout.extend({
     template: require("ldsh!./template"),
 
@@ -16,7 +24,8 @@ define(function(require, exports, module) {
     },
 
     startGame: function(){
-
+      basil.set('currentRound', 1);
+      basil.set('currentTimer', 0);
     }
   });
 

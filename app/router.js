@@ -7,6 +7,13 @@ define(function(require, exports, module) {
   var Highscores = require("components/highscores/index");
   var Start = require("components/start/index");
   var gameLayout;
+  var options = {
+    namespace: 'highscores',
+    storages: ['local'],
+    expireDays: 1
+  };
+
+  var basil = new Basil(options);
 
   require("collectionCache");
   require("bootstrap");
@@ -40,20 +47,26 @@ define(function(require, exports, module) {
       "highscores": "highscores"
     },
 
-    start: function(){
-      gameLayout.setView(".game", new Start.Views.List());
+    init: function(view){
+      if(!basil.get('currentTimer')){
+        basil.set('currentTimer', 0);
+      }
+      gameLayout.setView(".game", view);
       gameLayout.render();
+    },
+
+    start: function(){
+      this.init(new Start.Views.List());
     },
 
     play: function() {
-      gameLayout.setView(".game", new Play.Views.List({model : this.round}));
-      gameLayout.render();
+      this.init(new Play.Views.List({model : this.round}));
     },
 
     highscores: function() {
-      gameLayout.setView(".game", new Highscores.Views.List({model : this.highscores}));
-      gameLayout.render();
+      this.init(new Highscores.Views.List({model : this.highscores}));
     }
+
   });
 
   module.exports = Router;
