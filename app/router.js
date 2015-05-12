@@ -48,9 +48,11 @@ define(function(require, exports, module) {
     },
 
     init: function(view){
+
       if(!basil.get('currentTimer')){
         basil.set('currentTimer', 0);
       }
+
       gameLayout.setView(".game", view);
       setTimeout(function(){ gameLayout.render(); }, 500);
 
@@ -61,7 +63,6 @@ define(function(require, exports, module) {
     },
 
     play: function() {
-
       this.init(new Play.Views.List({model : this.round}));
     },
 

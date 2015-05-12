@@ -81,7 +81,7 @@ define(function(require, exports, module) {
       $(".timer").timer({seconds: basil.get('currentTimer')});
 
       //Update currentTimer to be able to resume after changing views
-      if($('.timer').data('seconds')){
+      if($('.timer').data('seconds') > -1){
         setInterval(function(){ basil.set('currentTimer', $('.timer').data('seconds')); }, 1000);
       }
 
