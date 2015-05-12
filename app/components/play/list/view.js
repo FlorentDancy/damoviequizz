@@ -16,14 +16,8 @@ define(function(require, exports, module) {
   var rounds = new PlayCollection();
 
   var timer;
-
-  /* TODO A METTRE DANS LE MODEL
-  this.round = 0;
-  this.currentActorId = "";
-  this.currentMovie = "";*/
-
-  this.actors = {};
-  this.popularMovies = {};
+  var actors = [];
+  var popularMovies = {};
 
 
   var Layout = Backbone.Layout.extend({
@@ -64,32 +58,9 @@ define(function(require, exports, module) {
 
     },
 
-    nextRound: function(){
-      //TODO Sélection au hasard d'un nouvel acteur et d'un film
-      //TODO Maj de leurs valeurs dans la collection
-      //TODO Actualiser la vue
-
-      var newRound = {
-        "currentActor" : {
-          "actorName" : "nom",
-          "actorFirstName" : "prénom",
-          "actorId" : "0"
-        },
-        "currentMovie" : {
-          "posterUrl" : "https://www.movieposter.com/posters/archive/main/24/MPW-12495",
-          "casting" : ["0"]
-        },
-        "currentRoundNumber": 0
-      };
-      rounds.reset();
-      rounds.add(newRound);
-
-      rounds.each(function(round) {
-        this.insertView("div", new Item({
-          model: round
-        }));
-      }, this);
-
+    randomProperty: function (obj) {
+      var keys = Object.keys(obj);
+      return obj[keys[ keys.length * Math.random() << 0]];
     },
 
     gameOver: function(){
@@ -110,17 +81,99 @@ define(function(require, exports, module) {
       //Instance of the timer
       $(".timer").timer();
 
-      //Get new datas for the round
-      this.nextRound();
+    },
+
+    getData: function(){
+      var dfd = $.Deferred();
+      var getPopularMovies = $.ajax({
+        method: "GET",
+        url: app.api + "movie/popular",
+        data: { api_key: app.apikey }
+      });
+
+      getPopularMovies.done(function( msg ) {
+        popularMovies = msg.results;
+
+        $.each(popularMovies, function(key, value){
+
+          var getCast = $.ajax({
+            method: "GET",
+            url: app.api + "movie/"+ value['id'] +"/credits",
+            data: { api_key: app.apikey }
+          });
+
+          getCast.done(function(data){
+            popularMovies[key]["cast"] = data["cast"];
+
+            $.each(popularMovies, function(key, value){
+              $.each(value["cast"], function(key, value){
+                actors.push(value["id"]);
+              })
+            });
+
+            dfd.resolve();
+          });
+
+        });
+
+      });
+
+      return dfd.promise();
+    },
+
+    nextRound: function(){
+      //TODO Get numéro de round
+      var newRoundNumber = 10;
+      var that = this;
+
+      $.when(this.getData()).done(function(){
+
+        var currentMovie = that.randomProperty(popularMovies);
+        var currentActorId = actors[Math.floor(Math.random()*actors.length)];
+
+        var getActorInfo = $.ajax({
+          method: "GET",
+          url: app.api + "person/" + currentActorId,
+          data: { api_key: app.apikey }
+        });
+
+        getActorInfo.done(function( data ) {
+
+          var newRound = {
+            "currentActor" : {
+              "actorName" : data["name"],
+              "actorPicture" : data["profile_path"],
+              "actorId" : data["id"]
+            },
+            "currentMovie" : {
+              "posterUrl" : currentMovie["poster_path"],
+              "cast" : currentMovie["cast"]
+            },
+            "currentRoundNumber": newRoundNumber
+          };
+
+          rounds.reset();
+          rounds.add(newRound);
+
+          console.log(rounds);
+
+          rounds.each(function(round) {
+            //FIXME
+            this.setView("div", new Item({ model: round }));
+          }, that);
+
+        });
+      });
+
     },
 
     initialize: function() {
 
       this.listenTo(this.model, "change", this.render);
 
-      //Appel API pour get liste popular movies
-      //Populate l'objet "popularMovies"
-      //Populate l'objet "actors" en prenant tous les acteurs de tous les popularMovies
+      if(!actors.length || $.isEmptyObject(popularMovies)){
+        this.getData();
+      }
 
     }
 
