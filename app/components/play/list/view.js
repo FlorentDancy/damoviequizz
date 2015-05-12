@@ -35,12 +35,11 @@ define(function(require, exports, module) {
 
       var goodAnswer;
       var elem = $(this);
-      //TODO utiliser variable du modèle directement
+      //TODO récupérer les valeurs via collection ?
       //currentMovie["casting"].indexOf(currentActorId) > -1 ? goodAnswer = true : goodAnswer = false;
       if((goodAnswer && elem.hasClass("yes")) || (!goodAnswer && elem.hasClass("no"))) {
-        this.nextRound();
-        //TODO Update value of round dans la collection
-        /*this.round =+1 ;*/
+        basil.set('currentRound', basil.get('currentRound') + 1);
+        this.nextRound(true);
       }
       else{
         this.gameOver();
@@ -64,8 +63,8 @@ define(function(require, exports, module) {
     },
 
     gameOver: function(){
-      // stop timer ($('#divId').timer('pause');) and get its value ($('#divId').data('seconds');)
-      //    and reset ($('#divId').timer('remove'))
+      var finalTime = basil.get('currentTimer');
+      //    and reset ($('#divId').timer('remove')) ?
       // open popup
       // if yes alors créer l'objet (data seconds, get round du model, valeur de l'input pour name) et saveHighscore
       // puis fermer la modale
@@ -73,13 +72,18 @@ define(function(require, exports, module) {
     },
 
     beforeRender: function(){
-      this.nextRound();
+      this.nextRound(false);
     },
 
     afterRender: function(){
 
       //Instance of the timer
-      $(".timer").timer();
+      $(".timer").timer({seconds: basil.get('currentTimer')});
+
+      //Update currentTimer to be able to resume after changing views
+      if($('.timer').data('seconds')){
+        setInterval(function(){ basil.set('currentTimer', $('.timer').data('seconds')); }, 1000);
+      }
 
     },
 
@@ -105,31 +109,27 @@ define(function(require, exports, module) {
           getCast.done(function(data){
             popularMovies[key]["cast"] = data["cast"];
 
-            $.each(popularMovies, function(key, value){
-              $.each(value["cast"], function(key, value){
-                actors.push(value["id"]);
-              })
+            $.each(popularMovies[key]["cast"], function(key, value){
+              actors.push(value["id"]);
             });
 
             dfd.resolve();
           });
 
         });
-
       });
 
       return dfd.promise();
     },
 
-    nextRound: function(){
-      //TODO Get numéro de round
-      var newRoundNumber = 10;
+    nextRound: function(render){
+      var newRoundNumber =  basil.get('currentRound');
       var that = this;
 
       $.when(this.getData()).done(function(){
 
         var currentMovie = that.randomProperty(popularMovies);
-        var currentActorId = actors[Math.floor(Math.random()*actors.length)];
+        var currentActorId = actors[Math.floor(Math.random() * actors.length)];
 
         var getActorInfo = $.ajax({
           method: "GET",
@@ -152,15 +152,21 @@ define(function(require, exports, module) {
             "currentRoundNumber": newRoundNumber
           };
 
-          rounds.reset();
-          rounds.add(newRound);
+          if(!$.isEmptyObject(rounds["models"])){
+            rounds.reset();
+            rounds.add(newRound);
+          }
+          else{
+            rounds.add(newRound);
+            rounds.each(function(round) {
+              that.setView("", new Item({ model: round }));
+            }, that);
+          }
 
-          console.log(rounds);
-
-          rounds.each(function(round) {
-            //FIXME
-            this.setView("div", new Item({ model: round }));
-          }, that);
+          // Only trigger render if it not inserted inside `beforeRender`.
+          if (render !== false) {
+            that.render();
+          }
 
         });
       });
@@ -168,8 +174,9 @@ define(function(require, exports, module) {
     },
 
     initialize: function() {
+      var that = this;
 
-      this.listenTo(this.model, "change", this.render);
+      //this.listenTo(rounds, "reset", this.render);
 
       if(!actors.length || $.isEmptyObject(popularMovies)){
         this.getData();

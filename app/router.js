@@ -52,7 +52,8 @@ define(function(require, exports, module) {
         basil.set('currentTimer', 0);
       }
       gameLayout.setView(".game", view);
-      gameLayout.render();
+      setTimeout(function(){ gameLayout.render(); }, 500);
+
     },
 
     start: function(){
@@ -60,6 +61,7 @@ define(function(require, exports, module) {
     },
 
     play: function() {
+
       this.init(new Play.Views.List({model : this.round}));
     },
 
