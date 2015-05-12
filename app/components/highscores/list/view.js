@@ -48,12 +48,14 @@ define(function(require, exports, module) {
 
       var entries = basil.keys();
       $.each(entries, function(key, value){
-        var entry = {
-          "name" : basil.get(value)['name'],
-          "score" : basil.get(value)['score'],
-          "time" : basil.get(value)['time']
-        };
-        highscores.add(entry);
+        if(typeof value === 'number'){
+          var entry = {
+            "name" : basil.get(value)['name'],
+            "score" : basil.get(value)['score'],
+            "time" : basil.get(value)['time']
+          };
+          highscores.add(entry);
+        }
       });
 
     }
