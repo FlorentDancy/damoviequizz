@@ -1,0 +1,20 @@
+<div class="row">
+
+    <div class="col-sm-4">
+        <div class="caption">
+            <h3>Question N°<%= currentRound.get("currentRoundNumber") || '000' %></h3>
+            <p>Does <%= currentRound.get("currentActor").actorFirstName || "ACTORFIRSTNAME" %> <%= currentRound.get("currentActor").actorName || "ACTORNAME" %> play in this movie?</p>
+            <p>
+                <button class="btn btn-lg btn-success yes answer" role="button">YES</button>
+                <button class="btn btn-lg btn-danger no answer" role="button">NO</button>
+            </p>
+        </div>
+    </div>
+
+    <div class="col-sm-4">
+        <img src="<%= currentRound.get('currentMovie').posterUrl %>" alt="Poster" class="poster">
+    </div>
+
+    <div class="timer col-sm-4"></div>
+
+</div>

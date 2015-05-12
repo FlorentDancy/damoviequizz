@@ -21,7 +21,8 @@ require.config({
     "bootstrap": "../bower_components/bootstrap/dist/js/bootstrap",
     "layoutmanager": "../bower_components/layoutmanager/backbone.layoutmanager",
     "collectionCache": "../vendor/backbone.collectioncache",
-    "basil": "../vendor/basil"
+    "basil": "../vendor/basil",
+    "timerjquery": "../vendor/timer.jquery"
   },
 
   shim: {
@@ -39,6 +40,8 @@ require.config({
     "collectionCache": ["backbone"],
 
     // Twitter Bootstrap depends on jQuery.
-    "bootstrap": ["jquery"]
+    "bootstrap": ["jquery"],
+
+    "timerjquery": ["jquery"]
   }
 });

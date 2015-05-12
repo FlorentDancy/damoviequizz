@@ -25,7 +25,7 @@ define(function(require, exports, module) {
         template: require("ldsh!./templates/main"),
 
         views: {
-          ".game": new Play.Views.List({model : this.round})
+          ".game": new Start.Views.List()
         }
       });
       
@@ -48,23 +48,11 @@ define(function(require, exports, module) {
     play: function() {
       gameLayout.setView(".game", new Play.Views.List({model : this.round}));
       gameLayout.render();
-      // Reset the state and render.
-      //this.reset();
-      //this.round.fetch();
     },
 
     highscores: function() {
       gameLayout.setView(".game", new Highscores.Views.List({model : this.highscores}));
       gameLayout.render();
-      //Clear the data
-      //this.highscores.clear();
-      // Fetch the data.
-      //this.highscores.fetch();
-    },
-
-    reset: function(){
-      // Reset collections to initial state.
-      //this.play.reset();
     }
   });
 
