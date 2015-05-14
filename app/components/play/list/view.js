@@ -31,6 +31,29 @@ define(function(require, exports, module) {
       "click .answer": "checkAnswer"
     },
 
+    notify: function(color, message){
+      $(".message").text(message);
+
+      if(color === "green"){
+        $(".message").addClass("alert-success");
+      }
+      else if (color === "red"){
+        $(".message").addClass("alert-danger");
+      }
+
+      $(".message").fadeIn(2000)
+        .fadeOut(5000, function(e) {
+
+          if(color === "green"){
+            $(".message").removeClass("alert-success");
+          }
+          else if (color === "red"){
+            $(".message").removeClass("alert-danger");
+          }
+
+        });
+    },
+
     checkAnswer: function(ev){
 
       var goodAnswer = false;
@@ -46,18 +69,17 @@ define(function(require, exports, module) {
       });
 
       if((goodAnswer && $(elem).hasClass("yes")) || (!goodAnswer && $(elem).hasClass("no"))) {
-        //TODO Fade in fade out vert sur question N°
 
         basil.set('currentRound', basil.get('currentRound') + 1);
         if(basil.get('currentRound') % 10 === 0){
-          //TODO Fade in fade out vert sur vies restantes
+          this.notify("green", "Tu as gagné une vie ! :)");
           basil.set('currentLives', basil.get('currentLives') + 1);
         }
         this.nextRound(true);
       }
       else{
         if(basil.get('currentLives') > 0){
-          //TODO Faire un fadein fadeout rouge sur vies restantes
+          this.notify("red", "Tu as perdu une vie ! :(");
           basil.set('currentLives', basil.get('currentLives') - 1);
           this.nextRound(true);
         }
@@ -99,7 +121,9 @@ define(function(require, exports, module) {
     },
 
     gameOver: function(){
+      console.log("Start game over");
       var finalTime = basil.get('currentTimer');
+      var finalScore = basil.get('currentScore');
       //    and reset ($('#divId').timer('remove')) ?
       // open popup
       // if yes alors créer l'objet (data seconds, get round du model, valeur de l'input pour name) et saveHighscore
