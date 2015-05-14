@@ -22,7 +22,13 @@ define(function(require, exports, module) {
     },
 
     resetHighscores: function(){
-      basil.reset();
+      var keys = basil.keys();
+      $.each(keys, function(key, value){
+        console.log(key + " : " + value);
+          if(!isNaN(value)) {
+            basil.remove(value);
+          }
+      });
       highscores.reset();
     },
 
@@ -58,7 +64,6 @@ define(function(require, exports, module) {
           highscores.add(entry);
         }
       });
-      this.render();
 
     }
   });
