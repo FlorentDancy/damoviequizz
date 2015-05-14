@@ -108,7 +108,10 @@ define(function(require, exports, module) {
     },
 
     beforeRender: function(){
-      this.nextRound(false);
+      var that = this;
+      rounds.each(function(round) {
+        that.setView("", new Item({ model: round }));
+      }, that);
     },
 
     afterRender: function(){
@@ -117,9 +120,20 @@ define(function(require, exports, module) {
       $(".timer").timer({seconds: basil.get('currentTimer')});
 
       //Update currentTimer to be able to resume after changing views
-      if($('.timer').data('seconds') > -1){
-        setInterval(function(){ basil.set('currentTimer', $('.timer').data('seconds')); }, 1000);
-      }
+      this.liveUpdateTimer();
+
+    },
+
+    liveUpdateTimer: function(){
+
+      setInterval(function(){
+        if($('.timer').data('seconds') > -1){
+          basil.set('currentTimer', $('.timer').data('seconds'));
+        }
+        else{
+          basil.set('currentTimer', basil.get('currentTimer') + 1);
+        }
+      }, 1000);
 
     },
 
@@ -192,17 +206,11 @@ define(function(require, exports, module) {
 
           if(!$.isEmptyObject(rounds["models"])){
             rounds.reset();
-            rounds.add(newRound);
-          }
-          else{
-            rounds.add(newRound);
-            rounds.each(function(round) {
-              that.setView("", new Item({ model: round }));
-            }, that);
           }
 
-          // Only trigger render if it not inserted inside `beforeRender`.
-          if (render !== false) {
+          rounds.add(newRound);
+
+          if(render){
             that.render();
           }
 
@@ -212,13 +220,9 @@ define(function(require, exports, module) {
     },
 
     initialize: function() {
-      var that = this;
 
-      //this.listenTo(rounds, "reset", this.render);
-
-      if(!actors.length || $.isEmptyObject(popularMovies)){
-        this.getData();
-      }
+      this.listenTo(rounds, "reset", this.render);
+      this.nextRound(false);
 
     }
 

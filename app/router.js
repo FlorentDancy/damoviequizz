@@ -54,6 +54,7 @@ define(function(require, exports, module) {
       }
 
       gameLayout.setView(".game", view);
+      //FIXME setTimeout...
       setTimeout(function(){ gameLayout.render(); }, 500);
 
     },
