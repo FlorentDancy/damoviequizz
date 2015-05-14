@@ -24,10 +24,9 @@ define(function(require, exports, module) {
     resetHighscores: function(){
       var keys = basil.keys();
       $.each(keys, function(key, value){
-        console.log(key + " : " + value);
-          if(!isNaN(value)) {
-            basil.remove(value);
-          }
+        if(!isNaN(value)) {
+          basil.remove(value);
+        }
       });
       highscores.reset();
     },
