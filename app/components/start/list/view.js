@@ -26,6 +26,7 @@ define(function(require, exports, module) {
     startGame: function(){
       basil.set('currentRound', 1);
       basil.set('currentTimer', 0);
+      basil.set('currentLives', 3)
     }
   });
 

@@ -33,27 +33,52 @@ define(function(require, exports, module) {
 
     checkAnswer: function(ev){
 
-      var goodAnswer;
-      var elem = $(this);
-      //TODO récupérer les valeurs via collection ?
-      //currentMovie["casting"].indexOf(currentActorId) > -1 ? goodAnswer = true : goodAnswer = false;
-      if((goodAnswer && elem.hasClass("yes")) || (!goodAnswer && elem.hasClass("no"))) {
+      var goodAnswer = false;
+      var that = this;
+      var elem = ev.target;
+      var currentCast = rounds["models"][0]["attributes"]["currentMovie"]["cast"];
+      var currentActorId = rounds["models"][0]["attributes"]["currentActor"]["actorId"];
+
+      $.each(currentCast, function(key, value){
+        if(currentCast[key]['id'] === currentActorId){
+          goodAnswer = true;
+        }
+      });
+
+      if((goodAnswer && $(elem).hasClass("yes")) || (!goodAnswer && $(elem).hasClass("no"))) {
+        //TODO Fade in fade out vert sur question N°
+
         basil.set('currentRound', basil.get('currentRound') + 1);
+        if(basil.get('currentRound') % 10 === 0){
+          //TODO Fade in fade out vert sur vies restantes
+          basil.set('currentLives', basil.get('currentLives') + 1);
+        }
         this.nextRound(true);
       }
       else{
-        this.gameOver();
+        if(basil.get('currentLives') > 0){
+          //TODO Faire un fadein fadeout rouge sur vies restantes
+          basil.set('currentLives', basil.get('currentLives') - 1);
+          this.nextRound(true);
+        }
+        else{
+          this.gameOver();
+        }
+
       }
+
     },
 
     getHighscores: function(keys){
       var that = this;
+
       $.each(keys, function(key, value){
         if(typeof value !== 'number'){
           keys.splice(key, 1);
           that.getHighscores(keys);
         }
       });
+
     },
 
     saveHighscore: function(name, score, time){
@@ -141,6 +166,7 @@ define(function(require, exports, module) {
 
         var currentMovie = that.randomProperty(popularMovies);
         var currentActorId = actors[Math.floor(Math.random() * actors.length)];
+        var currentLives = basil.get("currentLives");
 
         var getActorInfo = $.ajax({
           method: "GET",
@@ -160,7 +186,8 @@ define(function(require, exports, module) {
               "posterUrl" : currentMovie["poster_path"],
               "cast" : currentMovie["cast"]
             },
-            "currentRoundNumber": newRoundNumber
+            "currentRoundNumber": newRoundNumber,
+            "currentLives": currentLives
           };
 
           if(!$.isEmptyObject(rounds["models"])){

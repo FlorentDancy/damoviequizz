@@ -26,6 +26,8 @@
             <button class="btn btn-lg btn-success yes answer" role="button">YES</button>
             <button class="btn btn-lg btn-danger no answer" role="button">NO</button>
         </p>
+        <p><%= currentRound.get("currentLives") || '?' %> vie<% if(currentRound.get("currentLives") > 1){print('s')} %>
+            restante<% if(currentRound.get("currentLives") > 1){print('s')} %></p>
     </div>
 
 </div>
