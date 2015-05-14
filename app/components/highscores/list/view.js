@@ -44,11 +44,12 @@ define(function(require, exports, module) {
     },*/
 
     initialize: function() {
-      this.listenTo(highscores, "reset sync request", this.render);
+      this.listenTo(highscores, "reset", this.render);
 
       var entries = basil.keys();
+      highscores.reset();
       $.each(entries, function(key, value){
-        if(typeof value === 'number'){
+        if(!isNaN(value)){
           var entry = {
             "name" : basil.get(value)['name'],
             "score" : basil.get(value)['score'],
@@ -57,6 +58,7 @@ define(function(require, exports, module) {
           highscores.add(entry);
         }
       });
+      this.render();
 
     }
   });

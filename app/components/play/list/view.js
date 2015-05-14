@@ -46,9 +46,20 @@ define(function(require, exports, module) {
       }
     },
 
+    getHighscores: function(keys){
+      var that = this;
+      $.each(keys, function(key, value){
+        if(typeof value !== 'number'){
+          keys.splice(key, 1);
+          that.getHighscores(keys);
+        }
+      });
+    },
+
     saveHighscore: function(name, score, time){
 
       var keys = basil.keys();
+      this.getHighscores(keys);
       var largestKey;
       $.isEmptyObject(keys) ? largestKey = 0 : largestKey = Math.max.apply( Math, keys );
       var newKey = largestKey + 1;
