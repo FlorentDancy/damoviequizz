@@ -41,6 +41,9 @@ define(function(require, exports, module) {
       else if (color === "red"){
         elem.addClass("alert-danger");
       }
+      else if (color === "blue"){
+        elem.addClass("alert-info");
+      }
 
       elem.fadeIn(2000)
         .fadeOut(5000, function(e) {
@@ -50,6 +53,9 @@ define(function(require, exports, module) {
           }
           else if (color === "red"){
             elem.removeClass("alert-danger");
+          }
+          else if (color === "blue"){
+            elem.removeClass("alert-info");
           }
 
         });
@@ -76,6 +82,7 @@ define(function(require, exports, module) {
           this.notify("green", "Tu as gagné une vie ! :)", $(".message"));
           basil.set('currentLives', basil.get('currentLives') + 1);
         }
+        //TODO If highscore then notify
         this.nextRound(true);
       }
       else{
