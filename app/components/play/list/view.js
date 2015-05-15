@@ -150,14 +150,16 @@ define(function(require, exports, module) {
 
     liveUpdateTimer: function(){
 
-      setInterval(function(){
-        if($('.timer').data('seconds') > -1){
-          basil.set('currentTimer', $('.timer').data('seconds'));
-        }
-        else{
-          basil.set('currentTimer', basil.get('currentTimer') + 1);
-        }
-      }, 1000);
+      if(basil.get('currentTimer') === 0){
+        setInterval(function(){
+          if($('.timer').data('seconds') > -1){
+            basil.set('currentTimer', $('.timer').data('seconds'));
+          }
+          else{
+            basil.set('currentTimer', basil.get('currentTimer') + 1);
+          }
+        }, 1000);
+      }
 
     },
 
