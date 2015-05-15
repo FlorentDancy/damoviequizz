@@ -31,24 +31,24 @@ define(function(require, exports, module) {
       "click .answer": "checkAnswer"
     },
 
-    notify: function(color, message){
-      $(".message").text(message);
+    notify: function(color, message, elem){
+      elem.text(message);
 
       if(color === "green"){
-        $(".message").addClass("alert-success");
+        elem.addClass("alert-success");
       }
       else if (color === "red"){
-        $(".message").addClass("alert-danger");
+        elem.addClass("alert-danger");
       }
 
-      $(".message").fadeIn(2000)
+      elem.fadeIn(2000)
         .fadeOut(5000, function(e) {
 
           if(color === "green"){
-            $(".message").removeClass("alert-success");
+            elem.removeClass("alert-success");
           }
           else if (color === "red"){
-            $(".message").removeClass("alert-danger");
+            elem.removeClass("alert-danger");
           }
 
         });
@@ -72,14 +72,14 @@ define(function(require, exports, module) {
 
         basil.set('currentRound', basil.get('currentRound') + 1);
         if(basil.get('currentRound') % 10 === 0){
-          this.notify("green", "Tu as gagné une vie ! :)");
+          this.notify("green", "Tu as gagné une vie ! :)", $(".message"));
           basil.set('currentLives', basil.get('currentLives') + 1);
         }
         this.nextRound(true);
       }
       else{
         if(basil.get('currentLives') > 0){
-          this.notify("red", "Tu as perdu une vie ! :(");
+          this.notify("red", "Tu as perdu une vie ! :(", $(".message"));
           basil.set('currentLives', basil.get('currentLives') - 1);
           this.nextRound(true);
         }
