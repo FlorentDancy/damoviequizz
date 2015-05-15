@@ -28,7 +28,8 @@ define(function(require, exports, module) {
     },
 
     events: {
-      "click .answer": "checkAnswer"
+      "click .answer": "checkAnswer",
+      "click .modal-answer": "handleModalAnswer"
     },
 
     notify: function(color, message, elem){
@@ -121,20 +122,42 @@ define(function(require, exports, module) {
     },
 
     gameOver: function(){
-      console.log("Start game over");
-      var finalTime = basil.get('currentTimer');
-      var finalScore = basil.get('currentScore');
-      //    and reset ($('#divId').timer('remove')) ?
-      // open popup
-      // if yes alors créer l'objet (data seconds, get round du model, valeur de l'input pour name) et saveHighscore
-      // puis fermer la modale
-      // et créer nouveau round
+      $(".score-modal").text(basil.get('currentRound'));
+      $(".time-modal").text(basil.get('currentTimer'));
+      $("#gameOverModal").modal('show');
+    },
+
+    handleModalAnswer: function(e){
+      if($(e.target).hasClass("modal-save")){
+
+        if(!$(".username-modal").val()){
+          this.notify("red", "Indique ton nom !", $(".message-modal"));
+        }
+        else{
+          this.saveHighscore($(".username-modal").val(), $(".score-modal").text(), $(".time-modal").text());
+          $("#gameOverModal").modal('hide');
+          this.reset();
+        }
+
+      }
+      else{
+        $("#gameOverModal").modal('hide');
+        this.reset();
+      }
+
+    },
+
+    reset: function(){
+      basil.set('currentRound', 1);
+      basil.set('currentTimer', 0);
+      basil.set('currentLives', 3);
+      this.initialize();
     },
 
     beforeRender: function(){
       var that = this;
       rounds.each(function(round) {
-        that.setView("", new Item({ model: round }));
+        that.setView("div", new Item({ model: round }));
       }, that);
     },
 

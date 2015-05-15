@@ -26,8 +26,30 @@
             <button class="btn btn-lg btn-success yes answer" role="button">YES</button>
             <button class="btn btn-lg btn-danger no answer" role="button">NO</button>
         </p>
-        <p><%= currentRound.get("currentLives") || '?' %> vie<% if(currentRound.get("currentLives") > 1){print('s')} %>
+        <p><%= currentRound.get("currentLives") || '0' %> vie<% if(currentRound.get("currentLives") > 1){print('s')} %>
             restante<% if(currentRound.get("currentLives") > 1){print('s')} %></p>
     </div>
 
+</div>
+
+<div id="gameOverModal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Game over... :(</h4>
+            </div>
+            <div class="modal-body">
+                <p>Si tu veux enregistrer ton score (round N°<span class="score-modal"></span> en <span class="time-modal"></span>s),
+                    indique ton nom et enregistre !</p>
+                <hr/>
+                <div class="alert message-modal" role="alert"></div>
+                <input type="text" class="username-modal form-control"/>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="modal-answer btn btn-default" data-dismiss="modal">Quitter</button>
+                <button type="button" class="modal-answer modal-save btn btn-primary">Enregistrer</button>
+            </div>
+        </div>
+    </div>
 </div>
