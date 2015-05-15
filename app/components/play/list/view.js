@@ -201,12 +201,25 @@ define(function(require, exports, module) {
     nextRound: function(render){
       var newRoundNumber =  basil.get('currentRound');
       var that = this;
+      var currentActorId;
 
       $.when(this.getData()).done(function(){
 
         var currentMovie = that.randomProperty(popularMovies);
-        var currentActorId = actors[Math.floor(Math.random() * actors.length)];
         var currentLives = basil.get("currentLives");
+
+        if(Math.floor(Math.random() * 2) === 0){
+          currentActorId = actors[Math.floor(Math.random() * actors.length)];
+        }
+        else{
+          //FIXME Asynchro
+          if(currentMovie["cast"]){
+            currentActorId = currentMovie["cast"][Math.floor(Math.random() * currentMovie["cast"].length)]["id"];
+          }
+          else{
+            currentActorId = actors[Math.floor(Math.random() * actors.length)];
+          }
+        }
 
         var getActorInfo = $.ajax({
           method: "GET",
