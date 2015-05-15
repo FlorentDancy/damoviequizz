@@ -95,7 +95,7 @@ define(function(require, exports, module) {
       var that = this;
 
       $.each(keys, function(key, value){
-        if(typeof value !== 'number'){
+        if(isNaN(value)){
           keys.splice(key, 1);
           that.getHighscores(keys);
         }
