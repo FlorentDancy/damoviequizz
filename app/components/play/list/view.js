@@ -115,11 +115,34 @@ define(function(require, exports, module) {
 
       var keys = basil.keys();
       this.getHighscores(keys);
-      var largestKey;
-      $.isEmptyObject(keys) ? largestKey = 0 : largestKey = Math.max.apply( Math, keys );
-      var newKey = largestKey + 1;
-      newKey = newKey.toString();
-      basil.set(newKey, {"name" : name, "score" : score,  "time" : time});
+      var highscores= [];
+
+      $.each(keys, function(key, value){
+        highscores.push([value, basil.get(value)["name"], basil.get(value)["score"], basil.get(value)["time"]])
+      });
+
+      var newHighscoreKey = highscores.length + 1;
+      newHighscoreKey = newHighscoreKey.toString();
+
+      if(!$.isEmptyObject(highscores)){
+
+        for(var i = 0; i < highscores.length; i++){
+          if(score > highscores[i][2]){
+            newHighscoreKey = i + 1; break;
+          }
+        }
+
+        for(var j = highscores.length; j > newHighscoreKey - 1; j--){
+          var newKey = j+1;
+          newKey = newKey.toString();
+          basil.set(newKey, {"name" : highscores[j - 1][1], "score" : highscores[j - 1][2],  "time" : highscores[j - 1][3]});
+
+        }
+
+        newHighscoreKey = newHighscoreKey.toString();
+      }
+
+      basil.set(newHighscoreKey, {"name" : name, "score" : score,  "time" : time});
 
     },
 
