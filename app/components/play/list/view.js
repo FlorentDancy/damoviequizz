@@ -64,7 +64,6 @@ define(function(require, exports, module) {
     checkAnswer: function(ev){
 
       var goodAnswer = false;
-      var that = this;
       var elem = ev.target;
       var currentCast = rounds["models"][0]["attributes"]["currentMovie"]["cast"];
       var currentActorId = rounds["models"][0]["attributes"]["currentActor"]["actorId"];
@@ -144,17 +143,23 @@ define(function(require, exports, module) {
           }
         }
 
-        for(var j = highscores.length; j > newHighscoreKey - 1; j--){
-          var newKey = j+1;
-          newKey = newKey.toString();
-          basil.set(newKey, {"name" : highscores[j - 1][1], "score" : highscores[j - 1][2],  "time" : highscores[j - 1][3]});
+        if(newHighscoreKey < 11){
+          for(var j = highscores.length; j > newHighscoreKey - 1; j--){
+            var newKey = j+1;
+            newKey = newKey.toString();
+            basil.set(newKey, {"name" : highscores[j - 1][1], "score" : highscores[j - 1][2],  "time" : highscores[j - 1][3]});
 
+          }
+
+          newHighscoreKey = newHighscoreKey.toString();
         }
 
-        newHighscoreKey = newHighscoreKey.toString();
+
       }
 
-      basil.set(newHighscoreKey, {"name" : name, "score" : score,  "time" : time});
+      if(newHighscoreKey < 11) {
+        basil.set(newHighscoreKey, {"name": name, "score": score, "time": time});
+      }
 
     },
 
