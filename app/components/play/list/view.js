@@ -82,7 +82,7 @@ define(function(require, exports, module) {
           this.notify("green", "Tu as gagné une vie ! :)", $(".message"));
           basil.set('currentLives', basil.get('currentLives') + 1);
         }
-        //TODO If highscore then notify
+        this.checkHighscore(basil.get('currentRound'));
         this.nextRound(true);
       }
       else{
@@ -95,6 +95,18 @@ define(function(require, exports, module) {
           this.gameOver();
         }
 
+      }
+
+    },
+
+    checkHighscore: function(currentScore){
+      if(basil.get('1') === null){
+        this.notify("blue", "Nouveau meilleur score !", $(".message"));
+      }
+      else{
+        if(currentScore == basil.get('1')["score"] + 1){
+          this.notify("blue", "Nouveau meilleur score !", $(".message"));
+        }
       }
 
     },
