@@ -152,6 +152,11 @@ define(function(require, exports, module) {
           }
 
           newHighscoreKey = newHighscoreKey.toString();
+
+          for(var j = 10; j < highscores.length; j++){
+            var keyToRemove = i.toString();
+            basil.remove(keyToRemove);
+          }
         }
 
 
