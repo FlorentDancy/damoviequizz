@@ -189,12 +189,14 @@ define(function(require, exports, module) {
           this.saveHighscore($(".username-modal").val(), $(".score-modal").text(), $(".time-modal").text());
           $("#gameOverModal").modal('hide');
           this.reset();
+          document.location.href = '/';
         }
 
       }
       else{
         $("#gameOverModal").modal('hide');
         this.reset();
+        document.location.href = '/';
       }
 
     },
