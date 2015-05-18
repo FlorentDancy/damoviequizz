@@ -3,10 +3,10 @@ Da Movie Quizz
 
 ## Main features ##
 
-- Quizz based on The Movie Database API
-- Persistency of the timer during navigation
+- Quizz based on [The Movie Database API](http://docs.themoviedb.apiary.io/)
+- Persistency of the timer during navigation between pages, until new game is started
 - Possibility to save the score when the game is over
-- Persistency of the highscores for a day (10 best highscores)
+- Persistency of the highscores of the day (10 best highscores)
 - Possibility to reset the highscores
 - 3 lives when starting a game
 - Notification system (when losing a life, when winning a life - every 10 rounds, and when making a new highscore)
