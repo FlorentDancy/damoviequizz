@@ -1,6 +1,17 @@
 Da Movie Quizz
 =============
 
+## Main features ##
+
+- Quizz based on The Movie Database API
+- Persistency of the timer during navigation
+- Possibility to save the score when the game is over
+- Persistency of the highscores for a day (10 best highscores)
+- Possibility to reset the highscores
+- 3 lives when starting a game
+- Notification system (when losing a life, when winning a life - every 10 rounds, and when making a new highscore)
+- (Not yet, see [PR](https://github.com/FlorentDancy/damoviequizz/pull/1)) 50/50 chance for the answer
+
 
 ## Running locally ##
 
@@ -20,6 +31,36 @@ npm install -q
 # Run the server
 grunt server
 ```
+
+## Installation problem ##
+
+If you encounter such an error :
+
+``` bash
+# May appear when running `grunt server`
+Loading "server.js" tasks...ERROR
+>> TypeError: Cannot read property 'prototype' of undefined
+Warning: Task "server" not found. Use --force to continue.
+
+```
+... then you need to do as follow :
+``` bash
+nano /node_modules/grunt-bbb-server/package.json
+
+# Now you need to change the version of the http-proxy dependancy, by writing
+"http-proxy": "~1.11.1",
+
+# Then you need to run the following commands
+cd /node_modules/grunt-bbb-server
+npm update
+
+# Finally, you can check that all this process worked by doing...
+cat /node_modules/grunt-bbb-server/node_modules/http-proxy/package.json
+
+# ... and check that the version is now 1.11.1
+
+```
+[source of the solution](https://github.com/backbone-boilerplate/grunt-bbb-server/pull/9/files)
 
 ### Backbone Boilerplate ###
 
